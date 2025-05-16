@@ -16,19 +16,29 @@
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <script>
+        function getCoordinatesFromQuery() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                lat: parseFloat(params.get("lat")) || -0.1029,
+                lon: parseFloat(params.get("lon")) || -78.4904,
+                zoom: parseInt(params.get("zoom")) || 20
+            };
+        }
+
         function initialize() {
-            var myLatlng = new google.maps.LatLng(-0.102919867138, -78.49046619126); //-0.102919867138,-78.49046619126
+            const { lat, lon, zoom } = getCoordinatesFromQuery();
+            var myLatlng = new google.maps.LatLng(lat, lon);
+
             var mapOptions = {
-                zoom: 20,
+                zoom: zoom,
                 center: myLatlng
-            }
+            };
 
             var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
             var trafficLayer = new google.maps.TrafficLayer();
             trafficLayer.setMap(map);
         }
-
 
         google.maps.event.addDomListener(window, 'load', initialize);
 
